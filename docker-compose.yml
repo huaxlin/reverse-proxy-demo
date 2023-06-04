@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  httpbin:
+    image: huaxlin/httpbin
+    ports:
+      - 5080:80
+
+  reverse_proxy:
+    image: 'reverse-proxy-demo:${TAG-latest}'
+    ports:
+      - "2890:2890"
+    volumes:
+      - $PWD:/code
+    environment:
+      - PROXY_PASS_BASE_URL=http://httpbin:80/
+    depends_on:
+      - httpbin
+    # TODO: command: server-start-reload.sh
+    command: /code/server-start.sh -p 2890
+    build:
+      context: ./
+      dockerfile: reverse-proxy.Dockerfile
+
+  test_httpbin:
+    image: 'test-reverse-proxy-demo'
+    environment:
+      - TEST_BASE_URL=http://reverse_proxy:2890
+    depends_on:
+      - reverse_proxy
+    build:
+      context: ./
+      dockerfile: test.Dockerfile

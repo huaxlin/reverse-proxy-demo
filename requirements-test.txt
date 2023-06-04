@@ -1,0 +1,6 @@
+six
+werkzeug>=0.14.1
+furl
+requests
+pytest
+pytest-xdist
