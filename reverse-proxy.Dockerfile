@@ -1,5 +1,7 @@
 FROM python:3.9.16-slim-bullseye
 
+ENV TZ=Asia/Shanghai
+
 ARG PyPI_HOST=pypi.tuna.tsinghua.edu.cn
 ARG PyPI_REPO=https://${PyPI_HOST}/simple
 RUN echo "[global]" > /etc/pip.conf \
